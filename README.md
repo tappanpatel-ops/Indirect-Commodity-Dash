@@ -1,6 +1,6 @@
 # 🏭 Commodity Market Dashboard
 
-A comprehensive, interactive dashboard for analyzing global commodity markets and price trends.
+A focused, interactive dashboard for analyzing metals, logistics, and labor markets.
 
 ## 📊 Dashboard Features
 
@@ -19,22 +19,21 @@ A comprehensive, interactive dashboard for analyzing global commodity markets an
 
 ## 🎯 Key Commodities Tracked
 
-### **Metals & Steel**
-- Steel HRC (Hot Rolled Coil)
-- Steel CRC (Cold Rolled Coil) 
-- Steel Plate
-- Aluminum
-- Copper
-- Nickel
+### **Metals & Steel (12 commodities)**
+- Steel HRC, CRC, Plate, Wire, Stainless 304
+- Aluminum, Copper, Nickel, Lead, Tin
+- Iron Ore, Manganese
 
-### **Energy & Freight**
-- WTI Crude Oil
-- Container Freight (Asia-Europe)
+### **Container Freight (8 routes)**
+- Asia-Europe (20ft/40ft)
+- Asia-US (20ft/40ft)
+- Europe-US (20ft/40ft)
+- US Intracoastal (20ft/40ft)
 
-### **Economic Indicators**
-- Consumer Price Index (CPI)
-- Producer Price Index (PPI)
-- BLS Industrial Chemicals PPI (WPU061)
+### **Labor Market (5 indicators)**
+- Employment Cost Index (ECI)
+- Private Sector Wages & Benefits
+- Manufacturing & Construction ECI
 
 ## 📈 Data Sources
 
@@ -60,7 +59,7 @@ A comprehensive, interactive dashboard for analyzing global commodity markets an
 - **Data Processing:** Python with pandas, numpy
 - **Forecasting:** ARIMA and Exponential Smoothing models
 - **Hosting:** GitHub Pages
-- **Total Commodities:** 41 across 6 categories
+- **Total Commodities:** 25 across 3 categories
 
 ## 📞 Contact
 

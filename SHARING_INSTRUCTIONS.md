@@ -61,7 +61,7 @@ To enable GitHub Pages (if not already enabled):
 ## 📱 Features Available
 
 Your dashboard includes:
-- ✅ **41 commodities** across 6 categories (Metals, Energy, Agriculture, Precious Metals, Container Freight, Labor)
+- ✅ **25 commodities** across 3 categories (Metals, Container Freight, Labor)
 - ✅ Real-time commodity price data
 - ✅ Interactive charts and visualizations
 - ✅ Market analysis and trends
