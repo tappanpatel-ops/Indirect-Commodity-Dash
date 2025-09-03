@@ -45,7 +45,7 @@ A comprehensive, interactive dashboard for analyzing global commodity markets an
 
 ## 🚀 Live Dashboard
 
-**View the live dashboard:** [Your GitHub Pages URL will appear here]
+**View the live dashboard:** https://tappanpatel-ops.github.io/Indirect-Commodity-Dash/
 
 ## 📋 Report Details
 
