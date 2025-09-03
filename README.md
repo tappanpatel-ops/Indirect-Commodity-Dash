@@ -68,3 +68,4 @@ For questions or collaboration opportunities, please reach out to Tappan Patel.
 ---
 
 *This dashboard is designed for professional commodity market analysis and negotiation support.*
+
