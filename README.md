@@ -60,6 +60,7 @@ A comprehensive, interactive dashboard for analyzing global commodity markets an
 - **Data Processing:** Python with pandas, numpy
 - **Forecasting:** ARIMA and Exponential Smoothing models
 - **Hosting:** GitHub Pages
+- **Total Commodities:** 41 across 6 categories
 
 ## 📞 Contact
 
