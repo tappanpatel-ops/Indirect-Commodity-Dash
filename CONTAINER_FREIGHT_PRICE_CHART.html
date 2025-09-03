@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Freight - Price Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            color: #e0e0e0;
+            opacity: 0.9;
+        }
+        .chart-wrapper {
+            position: relative;
+            height: 500px;
+            margin: 20px 0;
+        }
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        .container-freight { background: linear-gradient(45deg, #2196f3, #1976d2); }
+        
+        .data-source {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #bdbdbd;
+            opacity: 0.8;
+        }
+        .data-source a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+        .data-source a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-container {
+                padding: 15px;
+                margin: 10px;
+            }
+            .chart-title {
+                font-size: 1.8em;
+            }
+            .chart-wrapper {
+                height: 400px;
+            }
+            .chart-legend {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h1 class="chart-title">🚢 Container Freight - 6-Year Price Performance</h1>
+        <p class="chart-subtitle">Container Freight Index - USD per TEU (2019-2024)</p>
+        
+        <div class="chart-wrapper">
+            <canvas id="freightChart"></canvas>
+        </div>
+        
+        <div class="chart-legend">
+            <div class="legend-item">
+                <span class="legend-color container-freight"></span>
+                <span>Container Freight</span>
+            </div>
+        </div>
+        
+        <div class="data-source">
+            Data Source: <a href="#" target="_blank">Market Data Provider</a>
+        </div>
+    </div>
+
+    <script>
+        // Container Freight Data (2019-2024)
+        const freightData = {
+            labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+            datasets: [
+                {
+                    label: 'Container Freight',
+                    data: [1500, 1800, 8500, 12000, 3500, 2800],
+                    borderColor: '#2196f3',
+                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#2196f3',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }
+            ]
+        };
+
+        // Chart configuration
+        const config = {
+            type: 'line',
+            data: freightData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        borderColor: '#ffd700',
+                        borderWidth: 2,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': $' + context.parsed.y.toFixed(0) + '/TEU';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Year',
+                            color: '#ffffff',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            drawBorder: true,
+                            borderColor: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Price (USD/TEU)',
+                            color: '#ffffff',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            drawBorder: true,
+                            borderColor: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            },
+                            callback: function(value) {
+                                return '$' + value.toFixed(0);
+                            }
+                        },
+                        beginAtZero: false,
+                        suggestedMin: 1000,
+                        suggestedMax: 12500
+                    }
+                },
+                elements: {
+                    point: {
+                        hoverRadius: 8
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        };
+
+        // Create the chart
+        const ctx = document.getElementById('freightChart').getContext('2d');
+        const freightChart = new Chart(ctx, config);
+
+        // Add click event for fullscreen functionality
+        document.querySelector('.chart-container').addEventListener('dblclick', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                this.requestFullscreen();
+            }
+        });
+    </script>
+</body>
+</html> 

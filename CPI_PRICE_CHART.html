@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPI - Consumer Price Index Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            color: #e0e0e0;
+            opacity: 0.9;
+        }
+        .chart-wrapper {
+            position: relative;
+            height: 500px;
+            margin: 20px 0;
+        }
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        .cpi-all { background: linear-gradient(45deg, #ff9800, #f57c00); }
+        .cpi-core { background: linear-gradient(45deg, #e91e63, #c2185b); }
+        .cpi-food { background: linear-gradient(45deg, #4caf50, #388e3c); }
+        .cpi-energy { background: linear-gradient(45deg, #f44336, #d32f2f); }
+        .cpi-housing { background: linear-gradient(45deg, #9c27b0, #7b1fa2); }
+        
+        .data-source {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #bdbdbd;
+            opacity: 0.8;
+        }
+        .data-source a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+        .data-source a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-container {
+                padding: 15px;
+                margin: 10px;
+            }
+            .chart-title {
+                font-size: 1.8em;
+            }
+            .chart-wrapper {
+                height: 400px;
+            }
+            .chart-legend {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h1 class="chart-title">💰 Consumer Price Index (CPI) Trends</h1>
+        <p class="chart-subtitle">Bureau of Labor Statistics - All Items, Core, Food, Energy & Housing (2019-2024)</p>
+        
+        <div class="chart-wrapper">
+            <canvas id="cpiChart"></canvas>
+        </div>
+        
+        <div class="chart-legend">
+            <div class="legend-item">
+                <span class="legend-color cpi-all"></span>
+                <span>CPI All Items</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color cpi-core"></span>
+                <span>Core CPI</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color cpi-food"></span>
+                <span>Food CPI</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color cpi-energy"></span>
+                <span>Energy CPI</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color cpi-housing"></span>
+                <span>Housing CPI</span>
+            </div>
+        </div>
+        
+        <div class="data-source">
+            Data Source: <a href="https://www.bls.gov/cpi/" target="_blank">Bureau of Labor Statistics - Consumer Price Index</a>
+        </div>
+    </div>
+
+    <script>
+        // CPI Data (2019-2024)
+        const cpiData = {
+            labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+            datasets: [
+                {
+                    label: 'CPI All Items',
+                    data: [255.7, 258.8, 270.9, 292.7, 304.7, 310.3],
+                    borderColor: '#ff9800',
+                    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#ff9800',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                },
+                {
+                    label: 'Core CPI',
+                    data: [256.2, 258.9, 270.2, 289.1, 299.2, 304.8],
+                    borderColor: '#e91e63',
+                    backgroundColor: 'rgba(233, 30, 99, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#e91e63',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                },
+                {
+                    label: 'Food CPI',
+                    data: [254.1, 256.8, 267.1, 283.5, 296.2, 301.8],
+                    borderColor: '#4caf50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#4caf50',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                },
+                {
+                    label: 'Energy CPI',
+                    data: [248.8, 235.2, 254.6, 297.1, 289.8, 285.5],
+                    borderColor: '#f44336',
+                    backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#f44336',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                },
+                {
+                    label: 'Housing CPI',
+                    data: [257.4, 260.1, 271.8, 289.2, 299.8, 305.2],
+                    borderColor: '#9c27b0',
+                    backgroundColor: 'rgba(156, 39, 176, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#9c27b0',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }
+            ]
+        };
+
+        // Chart configuration
+        const config = {
+            type: 'line',
+            data: cpiData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        borderColor: '#ffd700',
+                        borderWidth: 2,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y.toFixed(1);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Year',
+                            color: '#ffffff',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            drawBorder: true,
+                            borderColor: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'CPI Index Value (1982-84 = 100)',
+                            color: '#ffffff',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            drawBorder: true,
+                            borderColor: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        ticks: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            },
+                            callback: function(value) {
+                                return value.toFixed(0);
+                            }
+                        },
+                        beginAtZero: false,
+                        suggestedMin: 230,
+                        suggestedMax: 320
+                    }
+                },
+                elements: {
+                    point: {
+                        hoverRadius: 8
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        };
+
+        // Create the chart
+        const ctx = document.getElementById('cpiChart').getContext('2d');
+        const cpiChart = new Chart(ctx, config);
+
+        // Add click event for fullscreen functionality
+        document.querySelector('.chart-container').addEventListener('dblclick', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                this.requestFullscreen();
+            }
+        });
+    </script>
+</body>
+</html> 
